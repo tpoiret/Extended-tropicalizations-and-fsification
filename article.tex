@@ -1,0 +1,391 @@
+\documentclass[a4paper,12pt]{amsart} %{article}
+\title[label]{Title}
+
+%GENERAL PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath, amssymb, mathrsfs, amsthm, shorttoc, stmaryrd, tikz-cd, graphicx}%, txfonts}% amsfonts, url,, tikz, wrapfig, newclude, }
+\usepackage{mathtools} % for \coloneqq (and presumably other stuff!)
+\usepackage{comment}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+%\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[all]{xypic}
+%\renewcommand{\contentsname}{Table of contents}
+%\renewcommand{\cftdotsep}{1}
+%\renewcommand{\cftchapleader}{\bfseries\cftdotfill{\cftsecdotsep}}
+%\usepackage{bbold}
+
+\makeatletter
+\providecommand{\leftsquigarrow}{%
+  \mathrel{\mathpalette\reflect@squig\relax}%
+}
+\newcommand{\reflect@squig}[2]{%
+  \reflectbox{$\m@th#1\rightsquigarrow$}%
+}
+\makeatother
+
+
+%TOC
+\setcounter{tocdepth}{2}% to get subsections in toc
+ 
+\let\oldtocsection=\tocsection
+ 
+\let\oldtocsubsection=\tocsubsection
+ 
+\let\oldtocsubsubsection=\tocsubsubsection
+ 
+\renewcommand{\tocsection}[2]{\hspace{0em}\oldtocsection{#1}{#2}}
+\renewcommand{\tocsubsection}[2]{\hspace{1em}\oldtocsubsection{#1}{#2}}
+\renewcommand{\tocsubsubsection}[2]{\hspace{2em}\oldtocsubsubsection{#1}{#2}}
+
+%ENUMITEM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{enumitem}
+% eg \begin{enumerate}[label={\ref{definition:quasisplit}.\arabic*}]
+% eg. \begin{itemize}[label={1.\arabic*}]
+
+%CLEVEREF STUFF	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{cleveref}
+%\usepackage{nameref}
+\crefformat{equation}{(#2#1#3)}
+\let\oref\ref
+\AtBeginDocument{\renewcommand{\ref}[1]{\cref{#1}}}
+\numberwithin{equation}{subsection}
+
+%TIKZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{pgf,tikz}
+\usetikzlibrary{matrix, calc, arrows}
+%\usetikzlibrary{cd}
+%\DeclareMathOperator{\coker}{coker}
+\usepackage{tikz-cd} %this is the old version, but it also the one the arXiv supports at the moment (2016)
+\usetikzlibrary{decorations.pathmorphing,shapes}
+%TODONOTES
+%%%%%%%%
+%I found this clashed with several things, and it was easier just to do things by hand. 
+%\usepackage{todonotes}
+%\setlength{\marginparwidth}{3cm}
+%\reversemarginpar
+
+%Sites
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Sch}[1]{\cat{Sch}/#1}
+\newcommand{\LSch}{\cat{LSch}}
+\newcommand{\LSchfs}{\cat{LSch}^{\on{fs}}}
+\newcommand{\Schet}[1]{(\cat{Sch}/#1)_\et}
+\newcommand{\LSchet}[1]{(\cat{LSch}/#1)_\et}
+\newcommand{\shSchet}[1]{\on{Sh}(\cat{Sch}/#1)_\et}
+\newcommand{\shLSchet}[1]{\on{Sh}(\cat{LSch}/#1)_\et}
+\newcommand{\abSchet}[1]{\on{Ab}(\cat{Sch}/#1)_\et}
+\newcommand{\abLSchet}[1]{\on{Ab}(\cat{LSch}/#1)_\et}
+\newcommand{\sh}[1]{\on{Sh}(#1)}
+\newcommand{\ab}[1]{\on{Ab}(#1)}
+\renewcommand{\in}{\operatorname{in}}
+\newcommand{\inleq}{\operatorname{in}_{\preceq}}
+
+
+% DOUBLE AND TRIPLE ARROWS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand*{\doublerightarrow}[2]{\mathrel{
+  \settowidth{\@tempdima}{$\scriptstyle#1$}
+  \settowidth{\@tempdimb}{$\scriptstyle#2$}
+  \ifdim\@tempdimb>\@tempdima \@tempdima=\@tempdimb\fi
+  \mathop{\vcenter{
+    \offinterlineskip\ialign{\hbox to\dimexpr\@tempdima+1em{##}\cr
+    \rightarrowfill\cr\noalign{\kern.5ex}
+    \rightarrowfill\cr}}}\limits^{\!#1}_{\!#2}}}
+\newcommand*{\triplerightarrow}[1]{\mathrel{
+  \settowidth{\@tempdima}{$\scriptstyle#1$}
+  \mathop{\vcenter{
+    \offinterlineskip\ialign{\hbox to\dimexpr\@tempdima+1em{##}\cr
+    \rightarrowfill\cr\noalign{\kern.5ex}
+    \rightarrowfill\cr\noalign{\kern.5ex}
+    \rightarrowfill\cr}}}\limits^{\!#1}}}
+\makeatother
+%eg
+%$A\doublerightarrow{a}{bcdefgh}B$
+%$A\triplerightarrow{d_0,d_1,d_2}B$
+
+%MATH OPERATORS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\on}[1]{\operatorname{#1}}
+\newcommand{\bb}[1]{{\mathbb{#1}}}
+\newcommand{\cl}[1]{{\mathscr{#1}}}
+\newcommand{\ca}[1]{{\mathcal{#1}}}
+\newcommand{\bd}[1]{{\mathbf{#1}}}
+
+\newcommand{\ul}[1]{{\underline{#1}}}
+
+%SHEAF VERSIONS OF COMMON OPERATORS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\sheaflie{\mathcal{L}ie}
+\def\sheafhom{\mathcal{H}om}
+\def\sheafisom{\mathcal{I}som}
+
+\def\sheafaut{\mathcal{A}ut}
+%BRACKETS AND PAIRINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\lleft{\left<\!\left<}%{\langle\langle}
+\def\rright{\right>\!\right>}%{\rangle\rangle}
+\newcommand{\Span}[1]{\left<#1\right>}
+\newcommand{\SSpan}[1]{\lleft#1\rright}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\aabs}[1]{\lvert\lvert#1\rvert\rvert}
+\newcommand{\cat}[1]{\bd{#1}}
+
+%SUB- AND SUPERSCRIPTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\algcl}{^{\textrm{alg}}}
+\newcommand{\sepcl}{{^{\textrm{sep}}}}
+\newcommand{\urcl}{{^{\textrm{ur}}}}
+\newcommand{\ssm}{_{\smooth}}
+
+%FONT ENCODING AND EXOTIC LETTERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[OT2,OT1]{fontenc} %These three lines to print Sha cleanly. 
+%\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+%\DeclareMathSymbol{\Sha}{\mathalpha}{cyrletters}{"58}
+
+%MISC ARROWS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\hra}{\hookrightarrow}
+\newcommand{\sub}{\subseteq}
+\newcommand{\tra}{\rightarrowtail}
+\newcommand{\iso}{\stackrel{\sim}{\lra}}
+
+%Sam's stuff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareMathOperator*{\colim}{co{\lim}}
+\DeclareMathOperator{\Ima}{Im}
+\def\AF{{\mathcal{AF}}}
+\def\sat{{\rm sat}}
+\def\:{\colon}
+\def\.{,\dots,}
+\def\into{\hookrightarrow}
+\newcommand{\oM}{{\overline{M}}}
+\newcommand{\oN}{{\overline{N}}}
+\newcommand{\oP}{{\overline{P}}}
+\newcommand{\oQ}{{\overline{Q}}}
+\newcommand{\oR}{{\overline{R}}}
+\def\Aut{{\rm Aut}}
+\def\toisom{\xrightarrow{{_\sim}}}
+\def\CC{\mathbb C}
+\def\ZZ{\mathbb Z}
+\def\RR{\mathbb R}
+\def\NN{\mathbb N}
+\def\AA{\mathbb A}
+\def\QQ{\mathbb Q}
+\def\Zlog{\mathbb Z^{\log}}
+\def\trop{\operatorname{trop}}
+\def\coker{\operatorname{coker}}
+\def\im{\operatorname{im}}
+\def\et{\mathrm{\acute{e}t}}
+\def\stet{\mathrm{st\acute{e}t}}
+\def\overnorm#1{\overline{#1}}
+\def\Et{\mathrm{\acute{E}t}}
+\def\skel{\operatorname{skel}}
+\def\Tropic{\operatorname{TroPic}}
+\def\Logpic{\operatorname{LogPic}}
+\def\sLPic{\operatorname{sLPic}}
+\def\sTPic{\operatorname{sTPic}}
+\def\sPic{\operatorname{sPic}}
+\def\strLogPic{\operatorname{sLPic}}
+\def\strTroPic{\operatorname{sTPic}}
+\def\Pic{\operatorname{Pic}}
+\def\Irr{\operatorname{Irr}}
+\def\tor{\operatorname{tor}}
+\def\Div{\operatorname{Div}}
+\def\CDiv{\operatorname{CDiv}}
+\def\BG{B\mathbb{G}_m}
+\def\cL{\mathcal L}
+\def\cO{\mathcal O}
+\def\uX{{\underline{X}}}
+\def\uS{{\underline{S}}}
+\def\uY{{\underline{Y}}}
+\def\L#1{\mathcal{L}og_{#1}}
+\def\u#1{\underline{#1}}
+\def\o#1{\overline{#1}}
+\def\gp{\textrm{gp}}
+\def\int{\textrm{int}}
+\def\sat{\textrm{sat}}
+\def\c#1{\mathcal{#1}}
+\def\val#1{{#1}^{\rm{val}}}
+\def\infroot#1{\sqrt[\infty]{#1}}
+\def\inf#1{{#1}_{\infty}}
+\def\infval#1{{{#1}^{\rm{val}}_{\infty}}}
+\def\hello#1{$#1$}
+\def\Perf#1{\textup{Perf}({#1})}
+\newcommand{\cF}{{\mathcal F}}
+\newcommand{\cZ}{{\mathcal Z}}
+\newcommand{\cX}{{\mathcal X}}
+\newcommand{\cU}{{\mathcal U}}
+\newcommand{\Sh}{\operatorname{Sh}}
+\newcommand{\PSh}{\operatorname{PSh}}
+\newcommand{\HOM}{\operatorname{HOM}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+%\newcommand{\sslash}{\mathbin{/\mkern-6mu/}}
+\newcommand{\invlim}{\displaystyle \lim_{ \longleftarrow } \,}
+\newcommand{\dirlim}{\displaystyle \lim_{ \longrightarrow } \,}
+\newcommand{\id}{id}
+%THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{condition}[definition]{Condition}
+\newtheorem{problem}[definition]{Problem}
+\newtheorem{situation}[definition]{Situation}
+\newtheorem{construction}[definition]{Construction}
+\newtheorem{property}[definition]{Property}
+\newtheorem{fact}[definition]{Fact}
+
+\theoremstyle{plain}% default
+\newtheorem{conjecture}[definition]{Conjecture}
+\newtheorem{question}[definition]{Question}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{claim}[definition]{Claim}
+\newtheorem{inclaim}{Claim}[definition]
+
+
+\theoremstyle{remark}
+
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{aside}[definition]{Aside}
+\newtheorem{example}[definition]{Example}
+
+
+%MISC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\def\defeq{\stackrel{\text{\tiny def}}{=}}%depreciated: use coloneqq
+\newcommand{\linequiv}{\sim_{\text{\tiny lin}}} %Linear equivalence
+\renewcommand{\phi}{\varphi}
+\newcommand{\cecH}{\check{\on H}}%For Cech cohomology
+
+
+\newcommand{\Tcomment}[1]{{\color{red}T: #1}}
+
+% \newcommand{\Dcomment}[1]{}
+%temp
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ZE}{\ca Z^\ca E}
+\newcommand{\ZV}{\ca Z^\ca V}
+
+
+%COMMENTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{nootje}
+\setcounter{nootje}{1}
+\newcommand\todo[1]{[*\thenootje]\marginpar{\tiny\begin{minipage}
+{20mm}\begin{flushleft}\thenootje : 
+#1\end{flushleft}\end{minipage}}\addtocounter{nootje}{1}}
+%\renewcommand{\todo}[1]{}
+
+%SHORTCUTS FOR COMMON COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\laurent}[2]{[#1_1^{\pm 1}, \dots, #1_{#2}^{\pm 1}]}
+
+\begin{document}
+
+\begin{abstract} 
+Abstract
+\end{abstract}
+
+\maketitle
+	
+%\shorttableofcontents{Contents}{1}
+
+
+\tableofcontents
+
+
+
+\section{Introduction}
+
+\section{Background and notation}
+Tropical stuff, log stuff, Gr\"obner stuff. All monoids are commutative, all equivalence relations are monoidal (is this too confusing?), bars mean sharp, etc.
+
+\section{The combinatorics of fsification}
+\subsection{Monoids, binomial ideals and rewriting systems}
+
+Throughout this section, unless specified otherwise, $\Phi\colon F \to M$ will be a surjective map of monoids with $F$ free of finite rank $n$, and $R\subset F\times F$ will be the equivalence relation defining $M$. We think of $F$ as the set of monomials (with coefficient $1$) in the coordinate ring of $\bb A^n$, and of $M$ as their restriction to the closed subvariety $Z\subset \bb A^n$ cut out by those binomials $f-f'$ with $(f,f')\in R$.
+
+\begin{definition}
+	A \emph{basis} for $M$ is a subset of $F\times F$ whose symmetric, transitive, monoidal closure is $R$. Let $\preceq$ be a monomial order on $F$. The \emph{initial term} $\inleq(a,b)$ of any $(a,b)\in F\times F$ is undefined if $a=b$, and $\max(a,b)$\footnote{The maximum is taken with respect to $\preceq$.} otherwise. A \emph{Gr\"obner basis} for $M$ (with respect to $\preceq$) is a basis $\{r_i=(a_i,b_i)\}_{1\leq i\leq k}$ such that $\in(R)=\bigcup\limits_i(\inleq(r_i)+F)$.
+\end{definition}
+
+For the remainder of this section, we fix a monomial order $\preceq$ on $F$. We will omit $\preceq$ from the notation when we can unambiguously do so.
+
+\begin{lemma}[Macaulay]
+	The restriction of $\Phi$ to $F\backslash\in(R)$ is bijective.
+\end{lemma}
+
+\begin{proof}
+	If $a,b\in F$ have the same image under $\Phi|_{F\backslash\in(R)}$, then a fortiori $(a,b)$ is in $R$. Since neither $a$ nor $b$ may be in $\in(R)$, we have $a=b$. For surjectivity, pick any $m\in M$ and let $a$ be the minimum of $\Phi^{-1}(\{m\})$. By the minimality of $a$, $R$ contains no relation of the form $(a,b)$ with $b$ strictly smaller than $a$, i.e. $a$ is not in $\in(R)$.
+\end{proof}
+
+\begin{comment}
+	Too detailed?
+\begin{definition}
+	Let $M$ be a monoid and $R$ a subset of $M\times M$. We say $R$ is \emph{$M$-stable} if for all $m\in M$ we have $(m,m)+R\subset R$. The \emph{monoidal equivalence relation generated by $R$} is the smallest $M$-stable equivalence relation $\tilde R\subset M\times M$ containing $R$. The \emph{monoidal quotient of $M$ by $R$} is the monoid $M/\tilde R$, which comes with a surjective monoid map $M \to M/\tilde R$. We will almost always simply call it the \emph{quotient of $M$ by $R$} and denote it by $M/R$.
+\end{definition}
+
+\begin{remark}
+	If $M \to N$ is a surjective monoid map, the corresponding equivalence relation on $M$ is $M$-stable, so there is a natural contravariant equivalence between surjective morphisms $M \to N$ and $M$-stable equivalence relations on $M\times M$ ordered by inclusion.
+\end{remark}
+\end{comment}
+
+
+\begin{lemma}
+	A finitely generated monoid $M$ is finitely presented.
+\end{lemma}
+
+\begin{proof}
+	Done in Redei's book, but maybe we need more. Given $F\twoheadrightarrow M$ and a monomial order on $F$, we will need existence and uniqueness of a reduced Gr\"obner basis for $M$.
+\end{proof}
+
+
+\begin{definition}
+	Let $M$ be a monoid. The category of monoid maps $M \to N$ where $N$ is integral (resp. integral and saturated, resp. a group) admits an initial object $M \to M^\int$ (resp. $M \to M^\sat$, resp. $M \to M^\gp$). Its target monoid is called the \emph{integralification} (resp. \emph{integral saturation}, resp. \emph{groupification}) of $M$.
+\end{definition}
+
+\begin{lemma}
+	Let $F \to M$ be a surjective monoid map with $F$ free and finitely generated. Pick a monomial order on $F$, and let $\{r_i=(a_i,b_i)\}_{1\leq i\leq n}$ be the reduced Gr\"obner basis defining $M$ in $F$. For each $i$, put $r'_i=(a'_i,b'_i)$, where $a'_i=a_i-(a_i\wedge b_i)$ and $b'_i=b_i-(a_i\wedge b_i)$. Then the $r_i'$ form a reduced Gr\"obner basis for $M^\int$.
+\end{lemma}
+
+\begin{proof}
+	Let $R,R^\int$ be the relations defining $M$ and $M^\int$ in $F$. The $r'_i$ are in $R^\int$. Pick any relation $(a,b)$ in $R^\int$. We will show $(a,b)$ is generated by the $r'_i$. Without loss of generality, we may assume $a\wedge b=0$. There exists some $c\in F$ such that $(a+c,b+c)$ is in $R$. We may write a finite chain of substitutions \ref{to be made precise} $a+c=:\lambda^0 \to \dots \to \lambda^k:=b+c$ using the $r_i$. For any $0\leq j<k$, there is some $i$ such that $\lambda^j \to \lambda^{j+1}$ via $r_i$ i.e. $\lambda^j=\mu+a_i$ and $\lambda^{j+1}=\mu+b_i$.
+\end{proof}
+
+
+\subsection{Fsifying monoids}
+
+\subsection{Fsifying log schemes}
+The inclusion of categories $\LSchfs \to \LSch$ has a \ref{left or right or whatever} adjoint, called \emph{fsification}. When $X$ is a log scheme, we denote by $X^{fs}$ the fsification of $X$.
+
+\section{Toric fibre products}
+
+\section{Decomposing logarithmic fibre products}
+
+\section{Examples}
+
+
+\bibliographystyle{alpha} %amsplain}
+\bibliography{biblio}
+
+
+\bigskip
+
+\noindent
+Thibault POIRET,
+{\sc University of Cambridge, United Kingdom} \\
+Email address: {\tt tp528@ac.cam.uk}
+
+\end{document}
